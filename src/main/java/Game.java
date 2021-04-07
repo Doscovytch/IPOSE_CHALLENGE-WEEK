@@ -24,14 +24,14 @@ public class Game extends GameApplication {
         FXGL.onKey(KeyCode.W, () -> player.dy -= player.speed);
         FXGL.onKey(KeyCode.S, () -> player.dy += player.speed);
     }
-
     @Override
     protected void initGame() {
+        FXGL.getGameScene().setBackgroundRepeat("dude.png");
         player = new Player("dude.png");
     }
 
     @Override
-    public void onUpdate(double tpf) {
+    protected void onUpdate(double tpf) {
         player.update();
     }
 

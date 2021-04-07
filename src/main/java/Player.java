@@ -32,11 +32,11 @@ final public class Player {
     protected void update() {
         byte xsign = 1, ysign = 1;
         if (dx != 0 && dy != 0) {
-            if (dx < -0)
+            if (dx < 0)
             {
                 xsign = -1;
             }
-            if(dy < -0)
+            if(dy < 0)
             {
                 ysign = -1;
             }
