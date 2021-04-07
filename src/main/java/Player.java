@@ -2,7 +2,7 @@ import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 
-public class Player extends Entity {
+public class Player {
     boolean left, right, up, down;
     double dx = 0;
     double dy = 0;
@@ -33,5 +33,13 @@ public class Player extends Entity {
 
         dx = 0;
         dy = 0;
+    }
+
+    public double getX() {
+        return player.getX();
+    }
+
+    public double getY() {
+        return player.getY();
     }
 }

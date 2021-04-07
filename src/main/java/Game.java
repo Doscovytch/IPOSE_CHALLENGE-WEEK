@@ -16,6 +16,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public class Game extends GameApplication {
 
     private Player player;
+    private int frames = 0;
+    private int fps = 60;
+    private double startTimer = System.currentTimeMillis();
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -28,11 +31,8 @@ public class Game extends GameApplication {
     @Override
     protected void initInput() {
         FXGL.onKey(KeyCode.D, () -> player.dx += player.speed);
-
         FXGL.onKey(KeyCode.A, () -> player.dx -= player.speed);
-
         FXGL.onKey(KeyCode.W, () -> player.dy -= player.speed);
-
         FXGL.onKey(KeyCode.S, () -> player.dy += player.speed);
     }
 
@@ -43,9 +43,15 @@ public class Game extends GameApplication {
 
     @Override
     public void onUpdate(double tpf) {
-        System.out.println(1/tpf);
-
         player.update();
+
+        frames ++;
+        if (System.currentTimeMillis()-startTimer > 1000) {
+            startTimer = System.currentTimeMillis();
+            fps = frames;
+            frames = 0;
+            System.out.println(fps);
+        }
     }
 
     @Override
