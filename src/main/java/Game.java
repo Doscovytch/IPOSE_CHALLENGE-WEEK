@@ -27,43 +27,25 @@ public class Game extends GameApplication {
 
     @Override
     protected void initInput() {
-        FXGL.onKey(KeyCode.D, () -> {
-            player.dx += player.speed;
-        });
+        FXGL.onKey(KeyCode.D, () -> player.dx += player.speed);
 
-        FXGL.onKey(KeyCode.A, () -> {
-            player.dx -= player.speed;
-        });
+        FXGL.onKey(KeyCode.A, () -> player.dx -= player.speed);
 
-        FXGL.onKey(KeyCode.W, () -> {
-            player.dy -= player.speed;
-        });
+        FXGL.onKey(KeyCode.W, () -> player.dy -= player.speed);
 
-        FXGL.onKey(KeyCode.S, () -> {
-            player.dy += player.speed;
-        });
+        FXGL.onKey(KeyCode.S, () -> player.dy += player.speed);
     }
 
     @Override
     protected void initGame() {
         player = new Player();
+    }
 
+    @Override
+    public void onUpdate(double tpf) {
+        System.out.println(1/tpf);
 
-        FXGL.getGameTimer().runAtInterval(() -> {
-            // main loop
-
-            player.update();
-
-//            int randomX = ThreadLocalRandom.current().nextInt(80, FXGL.getGameScene().getAppWidth() -80);
-//            int randomY = ThreadLocalRandom.current().nextInt(80, FXGL.getGameScene().getAppWidth() -80);
-//            FXGL.entityBuilder()
-//                    .at(randomX, randomY)
-//                    .viewWithBBox(new Circle(40, Color.WHITE))
-//                    .with(new CollidableComponent(true))
-//                    .type(EntityTypes.STAR)
-//                    .buildAndAttach();
-        }, Duration.millis(0));
-
+        player.update();
     }
 
     @Override

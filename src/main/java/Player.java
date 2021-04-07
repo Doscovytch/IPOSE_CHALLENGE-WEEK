@@ -21,9 +21,6 @@ public class Player extends Entity {
 
 
     protected void update() {
-
-        double nordx;
-        double nordy;
         double factor;
         if (dx != 0 || dy != 0) {
             factor = Math.pow((speed*speed) / ((dx*dx) + (dy*dy)), 0.5);
