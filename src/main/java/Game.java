@@ -11,6 +11,7 @@ import com.almasb.fxgl.input.UserAction;
 import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -91,6 +92,7 @@ public class Game extends GameApplication {
 
     @Override
     protected void initGame() {
+        FXGL.getGameScene().setBackgroundRepeat("background/void.png");
         getGameWorld().addEntityFactory(new GameFactory());
 
         player = null;
@@ -103,8 +105,6 @@ public class Game extends GameApplication {
         set("player", player);
 
         camTarget = spawn("camTarget", 500, 500);
-
-        spawn("background");
 
         Viewport viewport = getGameScene().getViewport();
         viewport.bindToEntity(camTarget, getAppWidth() / 2, getAppHeight() / 2);
@@ -129,7 +129,6 @@ public class Game extends GameApplication {
         myText.setTranslateY(50);
         myText.textProperty().bind(FXGL.getWorldProperties().intProperty("kills").asString());
 
-        FXGL.getGameScene().setBackgroundColor(Color.BLACK);
         FXGL.getGameScene().addUINode(myText);
     }
 

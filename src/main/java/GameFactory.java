@@ -23,14 +23,6 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 
 public class GameFactory implements EntityFactory {
 
-    @Spawns("background")
-    public Entity newBackground(SpawnData data) {
-        return entityBuilder()
-                .view(new ScrollingBackgroundView(texture("background/void.png")))
-                .zIndex(-1)
-                .with(new IrremovableComponent())
-                .build();
-    }
 
 //    @Spawns("exitTrigger")
 //    public Entity newExitTrigger(SpawnData data) {

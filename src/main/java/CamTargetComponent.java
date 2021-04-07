@@ -22,8 +22,8 @@ public class CamTargetComponent extends Component {
         Point2D tarPos = player.getCenter();
         Point2D pos = entity.getPosition();
 
-        double lspeed = 50;
-
+        double lspeed = 5000/pos.distance(tarPos);
+        
         double newX = pos.getX();
         double newY = pos.getY();
 

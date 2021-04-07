@@ -36,10 +36,10 @@ public class PlayerComponent extends Component {
 
     public PlayerComponent() {
 
-//        Image image = image("dude.png");
+//        Image image = image("wawamn.png");
 //
-//        animIdle = new AnimationChannel(image, 1, 64, 64, Duration.seconds(1), 1, 1);
-//        animWalk = new AnimationChannel(image, 1, 64, 64, Duration.seconds(1), 1, 1);
+//        animIdle = new AnimationChannel(image, 4, 32, 42, Duration.seconds(1), 1, 1);
+//        animWalk = new AnimationChannel(image, 4, 32, 42, Duration.seconds(0.66), 0, 3);
 //
 //        texture = new AnimatedTexture(animIdle);
 //        texture.loop();
@@ -47,6 +47,8 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onAdded() {
+//        entity.getTransformComponent().setScaleOrigin(new Point2D(16, 21));
+//        entity.getViewComponent().addChild(texture);
     }
 
     @Override
@@ -64,8 +66,6 @@ public class PlayerComponent extends Component {
         int dxv = boolToInt(right) - boolToInt(left);
         int dyv = boolToInt(down) - boolToInt(up);
         Point2D vector = new Point2D(dxv, dyv).normalize();
-
-        System.out.println(dodge);
 
         if (dodge) {
             if (isDodge) {
