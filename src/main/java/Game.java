@@ -24,6 +24,7 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 public class Game extends GameApplication {
 
     private Entity player;
+    private Entity camTarget;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -79,6 +80,13 @@ public class Game extends GameApplication {
                 player.getComponent(PlayerComponent.class).down = false;
             }
         }, KeyCode.S, VirtualButton.DOWN);
+
+        getInput().addAction(new UserAction("Dodge") {
+            @Override
+            protected void onAction() {
+                player.getComponent(PlayerComponent.class).dodge = true;
+            }
+        }, KeyCode.SPACE, VirtualButton.B);
     }
 
     @Override
@@ -86,6 +94,7 @@ public class Game extends GameApplication {
         getGameWorld().addEntityFactory(new GameFactory());
 
         player = null;
+        camTarget = null;
 //        nextLevel();
 
         // player must be spawned after call to nextLevel, otherwise player gets removed
@@ -93,13 +102,13 @@ public class Game extends GameApplication {
         player = spawn("player", 500, 500);
         set("player", player);
 
+        camTarget = spawn("camTarget", 500, 500);
+
         spawn("background");
 
         Viewport viewport = getGameScene().getViewport();
-//        viewport.setBounds(-1500, -1500, 1500, 1500);
-        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
+        viewport.bindToEntity(camTarget, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setZoom(2);
-        viewport.setLazy(true);
     }
 
     @Override

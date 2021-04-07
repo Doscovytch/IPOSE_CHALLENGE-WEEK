@@ -22,8 +22,17 @@ public class PlayerComponent extends Component {
     public boolean right = false;
     public boolean up = false;
     public boolean down = false;
-
     public double speed = 200;
+
+    public boolean dodge = false;
+    public boolean isDodge = false;
+    public Point2D dodgeVec;
+    public double dodgeStartTime;
+    public double dodgeDuration;
+    public double dodgeSpeed = 300;
+
+
+
 
     public PlayerComponent() {
 
@@ -63,8 +72,38 @@ public class PlayerComponent extends Component {
 
         int dxv = boolToInt(right) - boolToInt(left);
         int dyv = boolToInt(down) - boolToInt(up);
-        physics.setLinearVelocity(new Point2D(dxv*speed, dyv*speed));
+        Point2D vector = new Point2D(dxv, dyv).normalize();
 
-        System.out.println(" x:" + entity.getX() + " y:" + entity.getY());
+        System.out.println(dodge);
+
+        if (dodge) {
+            if (isDodge) {
+                Dodge();
+            } else {
+                Dodge(System.currentTimeMillis(), 500, vector);
+            }
+        } else {
+            vector = vector.multiply(speed);
+            physics.setLinearVelocity(vector);
+        }
+
+    }
+
+    private void Dodge(double startTime, double duration, Point2D vec) {
+        dodgeStartTime = startTime;
+        dodgeDuration = duration;
+
+        isDodge = true;
+        dodgeVec = vec;
+        physics.setLinearVelocity(dodgeVec.multiply(dodgeSpeed));
+    }
+
+    private void Dodge() {
+        if(System.currentTimeMillis()-dodgeStartTime < dodgeDuration) {
+            physics.setLinearVelocity(dodgeVec.multiply(dodgeSpeed));
+        } else {
+            dodge = false;
+            isDodge = false;
+        }
     }
 }

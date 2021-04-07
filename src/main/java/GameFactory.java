@@ -61,4 +61,15 @@ public class GameFactory implements EntityFactory {
                 .with(new PlayerComponent())
                 .build();
     }
+
+    @Spawns("camTarget")
+    public Entity newCamTarget(SpawnData data) {
+        System.out.println(data);
+        return entityBuilder(data)
+                .type(EntityTypes.CAMTAR)
+                .with(new CollidableComponent(true))
+                .with(new IrremovableComponent())
+                .with(new CamTargetComponent())
+                .build();
+    }
 }
