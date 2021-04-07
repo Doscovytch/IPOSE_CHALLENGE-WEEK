@@ -91,13 +91,12 @@ public class Game extends GameApplication {
         // player must be spawned after call to nextLevel, otherwise player gets removed
         // before the update tick _actually_ adds the player to game world
         player = spawn("player", 500, 500);
-
         set("player", player);
 
         spawn("background");
 
         Viewport viewport = getGameScene().getViewport();
-        viewport.setBounds(-1500, -1500, 1500, 1500);
+//        viewport.setBounds(-1500, -1500, 1500, 1500);
         viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
         viewport.setZoom(2);
         viewport.setLazy(true);
