@@ -15,7 +15,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Game extends GameApplication {
 
-    private Entity player;
+    private Player player;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -26,44 +26,43 @@ public class Game extends GameApplication {
     }
 
     @Override
-    protected  void initInput() {
+    protected void initInput() {
         FXGL.onKey(KeyCode.D, () -> {
-            player.translateX(5);
+            player.dx += player.speed;
         });
 
         FXGL.onKey(KeyCode.A, () -> {
-            player.translateX(-5);
+            player.dx -= player.speed;
         });
 
         FXGL.onKey(KeyCode.W, () -> {
-            player.translateY(-5);
+            player.dy -= player.speed;
         });
 
         FXGL.onKey(KeyCode.S, () -> {
-            player.translateY(5);
+            player.dy += player.speed;
         });
     }
 
     @Override
     protected void initGame() {
-        player = FXGL.entityBuilder()
-                .at(700, 700)
-                .viewWithBBox("dude.png")
-                .with(new CollidableComponent(true))
-                .scale(5, 5)
-                .type(EntityTypes.PLAYER)
-                .buildAndAttach();
+        player = new Player();
+
 
         FXGL.getGameTimer().runAtInterval(() -> {
-            int randomX = ThreadLocalRandom.current().nextInt(80, FXGL.getGameScene().getAppWidth() -80);
-            int randomY = ThreadLocalRandom.current().nextInt(80, FXGL.getGameScene().getAppWidth() -80);
-            FXGL.entityBuilder()
-                    .at(randomX, randomY)
-                    .viewWithBBox(new Circle(40, Color.WHITE))
-                    .with(new CollidableComponent(true))
-                    .type(EntityTypes.STAR)
-                    .buildAndAttach();
-        }, Duration.millis(2000));
+            // main loop
+
+            player.update();
+
+//            int randomX = ThreadLocalRandom.current().nextInt(80, FXGL.getGameScene().getAppWidth() -80);
+//            int randomY = ThreadLocalRandom.current().nextInt(80, FXGL.getGameScene().getAppWidth() -80);
+//            FXGL.entityBuilder()
+//                    .at(randomX, randomY)
+//                    .viewWithBBox(new Circle(40, Color.WHITE))
+//                    .with(new CollidableComponent(true))
+//                    .type(EntityTypes.STAR)
+//                    .buildAndAttach();
+        }, Duration.millis(0));
 
     }
 
@@ -93,7 +92,6 @@ public class Game extends GameApplication {
     @Override
     protected void initGameVars(Map<String, Object> vars) {
         vars.put("kills", 0);
-
     }
 
     public static void main(String [] args) {
