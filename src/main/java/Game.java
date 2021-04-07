@@ -1,17 +1,8 @@
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.physics.CollisionHandler;
-import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
-import javafx.util.Duration;
 
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class Game extends GameApplication {
 
@@ -23,6 +14,8 @@ public class Game extends GameApplication {
         settings.setHeight(800);
         settings.setTitle("its a Fucking Game");
         settings.setVersion("0.69");
+        settings.setTicksPerSecond(60);
+        player.player.getPosition().
     }
 
     @Override
@@ -35,7 +28,7 @@ public class Game extends GameApplication {
 
     @Override
     protected void initGame() {
-        player = new Player();
+        player = new Player("dude.png");
     }
 
     @Override
@@ -43,22 +36,8 @@ public class Game extends GameApplication {
         player.update();
     }
 
-    @Override
-    protected void initPhysics() {
 
-    }
 
-    @Override
-    protected void initUI() {
-        Label myText = new Label("Hello There");
-        myText.setStyle("-fx-text-fill: white");
-        myText.setTranslateX(50);
-        myText.setTranslateY(50);
-        myText.textProperty().bind(FXGL.getWorldProperties().intProperty("kills").asString());
-
-        FXGL.getGameScene().setBackgroundColor(Color.BLACK);
-        FXGL.getGameScene().addUINode(myText);
-    }
 
     public static void main(String [] args) {
         launch(args);
