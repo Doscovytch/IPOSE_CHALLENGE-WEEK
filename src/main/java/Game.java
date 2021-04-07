@@ -1,7 +1,6 @@
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
 import com.almasb.fxgl.dsl.FXGL;
-import com.almasb.fxgl.dsl.handlers.CollectibleHandler;
 import com.almasb.fxgl.entity.Entity;
 import com.almasb.fxgl.entity.components.CollidableComponent;
 import com.almasb.fxgl.physics.CollisionHandler;
@@ -9,10 +8,8 @@ import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 
-import java.awt.*;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -54,7 +51,7 @@ public class Game extends GameApplication {
                 .viewWithBBox("dude.png")
                 .with(new CollidableComponent(true))
                 .scale(5, 5)
-                .type(EntityTyes.PLAYER)
+                .type(EntityTypes.PLAYER)
                 .buildAndAttach();
 
         FXGL.getGameTimer().runAtInterval(() -> {
@@ -64,7 +61,7 @@ public class Game extends GameApplication {
                     .at(randomX, randomY)
                     .viewWithBBox(new Circle(40, Color.WHITE))
                     .with(new CollidableComponent(true))
-                    .type(EntityTyes.STAR)
+                    .type(EntityTypes.STAR)
                     .buildAndAttach();
         }, Duration.millis(2000));
 
@@ -72,7 +69,7 @@ public class Game extends GameApplication {
 
     @Override
     protected void initPhysics() {
-        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityTyes.PLAYER, EntityTyes.STAR) {
+        FXGL.getPhysicsWorld().addCollisionHandler(new CollisionHandler(EntityTypes.PLAYER, EntityTypes.STAR) {
             @Override
             protected void onCollision(Entity player, Entity star) {
                 FXGL.inc("kills", +1);
