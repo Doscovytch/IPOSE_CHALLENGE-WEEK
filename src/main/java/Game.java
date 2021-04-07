@@ -15,7 +15,6 @@ public class Game extends GameApplication {
         settings.setTitle("its a Fucking Game");
         settings.setVersion("0.69");
         settings.setTicksPerSecond(60);
-        player.player.getPosition().
     }
 
     @Override
