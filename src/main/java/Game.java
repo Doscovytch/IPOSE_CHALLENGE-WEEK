@@ -19,6 +19,7 @@ public class Game extends GameApplication {
     private int frames = 0;
     private int fps = 60;
     private double startTimer = System.currentTimeMillis();
+    private double updateDelay = 16.66666666666666666666666;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -34,6 +35,15 @@ public class Game extends GameApplication {
         FXGL.onKey(KeyCode.A, () -> player.dx -= player.speed);
         FXGL.onKey(KeyCode.W, () -> player.dy -= player.speed);
         FXGL.onKey(KeyCode.S, () -> player.dy += player.speed);
+
+        FXGL.onKeyDown(KeyCode.Q, () -> {
+            if (updateDelay == 1) {
+                updateDelay = 16.66666666666666666666666;
+            } else {
+                updateDelay = 1;
+            }
+            System.out.println("changed to: " + updateDelay);
+        });
     }
 
     @Override
@@ -43,7 +53,10 @@ public class Game extends GameApplication {
 
     @Override
     public void onUpdate(double tpf) {
-        player.update();
+
+        if (System.currentTimeMillis()-startTimer > updateDelay) {
+            player.update();
+        }
 
         frames ++;
         if (System.currentTimeMillis()-startTimer > 1000) {
