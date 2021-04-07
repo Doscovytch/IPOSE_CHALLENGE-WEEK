@@ -47,15 +47,6 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onAdded() {
-//        entity.getTransformComponent().setScaleOrigin(new Point2D(16, 21));
-//        entity.getViewComponent().addChild(texture);
-
-//        physics.onGroundProperty().addListener((obs, old, isOnGround) -> {
-//            if (isOnGround) {
-//                //play("land.wav");
-//                jumps = 2;
-//            }
-//        });
     }
 
     @Override
