@@ -1,14 +1,8 @@
-import com.almasb.fxgl.animation.Interpolators;
 import com.almasb.fxgl.app.GameApplication;
 import com.almasb.fxgl.app.GameSettings;
-import com.almasb.fxgl.app.scene.GameView;
-import com.almasb.fxgl.app.scene.Viewport;
 import com.almasb.fxgl.dsl.FXGL;
 import com.almasb.fxgl.entity.Entity;
-import com.almasb.fxgl.entity.SpawnData;
 import com.almasb.fxgl.entity.components.CollidableComponent;
-import com.almasb.fxgl.input.UserAction;
-import com.almasb.fxgl.input.virtual.VirtualButton;
 import com.almasb.fxgl.physics.CollisionHandler;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
@@ -19,11 +13,9 @@ import javafx.util.Duration;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static com.almasb.fxgl.dsl.FXGL.*;
-
 public class Game extends GameApplication {
 
-    private Entity player;
+    private Player player;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -31,85 +23,29 @@ public class Game extends GameApplication {
         settings.setHeight(800);
         settings.setTitle("its a Fucking Game");
         settings.setVersion("0.69");
-        settings.setTicksPerSecond(60);
     }
 
     @Override
     protected void initInput() {
-        getInput().addAction(new UserAction("Left") {
-            @Override
-            protected void onAction() {
-                player.getComponent(PlayerComponent.class).left = true;
-            }
-            @Override
-            protected void onActionEnd() {
-                player.getComponent(PlayerComponent.class).left = false;
-            }
-        }, KeyCode.A, VirtualButton.LEFT);
-
-        getInput().addAction(new UserAction("Right") {
-            @Override
-            protected void onAction() {
-                player.getComponent(PlayerComponent.class).right = true;
-            }
-            @Override
-            protected void onActionEnd() {
-                player.getComponent(PlayerComponent.class).right = false;
-            }
-        }, KeyCode.D, VirtualButton.RIGHT);
-
-        getInput().addAction(new UserAction("Up") {
-            @Override
-            protected void onAction() {
-                player.getComponent(PlayerComponent.class).up = true;
-            }
-            @Override
-            protected void onActionEnd() {
-                player.getComponent(PlayerComponent.class).up = false;
-            }
-        }, KeyCode.W, VirtualButton.UP);
-
-        getInput().addAction(new UserAction("Down") {
-            @Override
-            protected void onAction() {
-                player.getComponent(PlayerComponent.class).down = true;
-            }
-            @Override
-            protected void onActionEnd() {
-                player.getComponent(PlayerComponent.class).down = false;
-            }
-        }, KeyCode.S, VirtualButton.DOWN);
+        FXGL.onKey(KeyCode.D, () -> player.dx += player.speed);
+        FXGL.onKey(KeyCode.A, () -> player.dx -= player.speed);
+        FXGL.onKey(KeyCode.W, () -> player.dy -= player.speed);
+        FXGL.onKey(KeyCode.S, () -> player.dy += player.speed);
     }
 
     @Override
     protected void initGame() {
-        getGameWorld().addEntityFactory(new GameFactory());
-
-        player = null;
-//        nextLevel();
-
-        // player must be spawned after call to nextLevel, otherwise player gets removed
-        // before the update tick _actually_ adds the player to game world
-        player = spawn("player", 500, 500);
-        set("player", player);
-
-        spawn("background");
-
-        Viewport viewport = getGameScene().getViewport();
-//        viewport.setBounds(-1500, -1500, 1500, 1500);
-        viewport.bindToEntity(player, getAppWidth() / 2, getAppHeight() / 2);
-        viewport.setZoom(2);
-        viewport.setLazy(true);
+        player = new Player();
     }
 
     @Override
     public void onUpdate(double tpf) {
-        System.out.print("\rFPS: " + 1/tpf);
+        player.update();
     }
 
     @Override
     protected void initPhysics() {
-        getPhysicsWorld().setGravity(0, 0);
+
     }
 
     @Override
@@ -122,11 +58,6 @@ public class Game extends GameApplication {
 
         FXGL.getGameScene().setBackgroundColor(Color.BLACK);
         FXGL.getGameScene().addUINode(myText);
-    }
-
-    @Override
-    protected void initGameVars(Map<String, Object> vars) {
-        vars.put("kills", 0);
     }
 
     public static void main(String [] args) {
