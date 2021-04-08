@@ -6,7 +6,7 @@ public class CamTargetComponent extends Component {
 
     private Entity player;
 
-
+    public CamTargetComponent() {}
 
     @Override
     public void onAdded() {
