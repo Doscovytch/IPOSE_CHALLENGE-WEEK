@@ -3,6 +3,7 @@ import com.almasb.fxgl.physics.PhysicsComponent;
 import com.almasb.fxgl.texture.AnimatedTexture;
 import com.almasb.fxgl.texture.AnimationChannel;
 import javafx.geometry.Point2D;
+import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.util.Duration;
 
@@ -25,14 +26,18 @@ public class PlayerComponent extends Component {
     public boolean up = false;
     public boolean down = false;
     public double speed = 200;
+    public Point2D lastDir = new Point2D(1, 0);
 
     public boolean dodge = false;
-    public boolean isDodge = false;
-    public Point2D dodgeVec;
-    public double dodgeStartTime;
-    public double dodgeDuration;
-    public double dodgeSpeed = 300;
+    private boolean isDodge = false;
+    private Point2D dodgeVec;
+    private double dodgeStartTime;
+    private double dodgeEndTime = System.currentTimeMillis();
+    private double dodgeDuration = 500;
+    private double dodgeDelay = 250;
+    private double dodgeSpeed = 300;
 
+    private Image dodgeImage = image("player/Prole.png");
 
 
 
@@ -40,11 +45,11 @@ public class PlayerComponent extends Component {
 
         Image image1 = image("player/Pidle.png");
         Image image2 = image("player/Pwalking.png");
-        Image image3 = image("player/Prole.png");
+
 
         animIdle = new AnimationChannel(image1, 1, 25, 25, Duration.seconds(1), 0, 0);
         animWalk = new AnimationChannel(image2, 2, 25, 25, Duration.seconds(0.33), 0, 1);
-        animRoll = new AnimationChannel(image3, 7, 25, 25, Duration.seconds(1), 0, 6);
+        animRoll = new AnimationChannel(dodgeImage, 7, 25, 25, Duration.seconds(1), 0, 6);
 
         texture = new AnimatedTexture(animIdle);
         texture.loop();
@@ -75,20 +80,31 @@ public class PlayerComponent extends Component {
         int dyv = boolToInt(down) - boolToInt(up);
         Point2D vector = new Point2D(dxv, dyv).normalize();
 
-//        if (dxv != 0) {
-//            getEntity().setScaleX(dxv*scale);
-//        }
+        if (dxv != 0) {
+            getEntity().setScaleX(dxv*scale);
+        }
 
-        if (dodge) {
+        if (dodge && System.currentTimeMillis()-dodgeEndTime > dodgeDelay) {
             if (isDodge) {
                 Dodge();
             } else {
-                Dodge(System.currentTimeMillis(), 500, vector);
+                if (vector.magnitude() == 1) {
+                    Dodge(System.currentTimeMillis(), 500, vector);
+                } else {
+                    Dodge(System.currentTimeMillis(), 500, lastDir);
+                }
             }
         } else {
             vector = vector.multiply(speed);
             physics.setLinearVelocity(vector);
+            if (physics.isMoving()) {
+                lastDir = new Point2D(dxv, dyv).normalize();
+            }
         }
+
+
+
+        System.out.println();
 
     }
 
@@ -96,6 +112,7 @@ public class PlayerComponent extends Component {
         dodgeStartTime = startTime;
         dodgeDuration = duration;
 
+        animRoll = new AnimationChannel(dodgeImage, 7, 25, 25, Duration.seconds(dodgeDuration/1000), 0, 6);
         texture.loopAnimationChannel(animRoll);
 
         isDodge = true;
@@ -109,6 +126,7 @@ public class PlayerComponent extends Component {
         } else {
             dodge = false;
             isDodge = false;
+            dodgeEndTime = System.currentTimeMillis();
         }
     }
 }
