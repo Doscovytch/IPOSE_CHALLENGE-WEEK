@@ -16,7 +16,9 @@ public class PlayerComponent extends Component {
     private PhysicsComponent physics;
 
     private AnimatedTexture texture;
-    private AnimationChannel animIdle, animWalk;
+    private AnimationChannel animIdle, animWalk, animRoll;
+
+    public double scale = 2;
 
     public boolean left = false;
     public boolean right = false;
@@ -36,36 +38,46 @@ public class PlayerComponent extends Component {
 
     public PlayerComponent() {
 
-//        Image image = image("wawamn.png");
-//
-//        animIdle = new AnimationChannel(image, 4, 32, 42, Duration.seconds(1), 1, 1);
-//        animWalk = new AnimationChannel(image, 4, 32, 42, Duration.seconds(0.66), 0, 3);
-//
-//        texture = new AnimatedTexture(animIdle);
-//        texture.loop();
+        Image image1 = image("player/Pidle.png");
+        Image image2 = image("player/Pwalking.png");
+        Image image3 = image("player/Prole.png");
+
+        animIdle = new AnimationChannel(image1, 1, 25, 25, Duration.seconds(1), 0, 0);
+        animWalk = new AnimationChannel(image2, 2, 25, 25, Duration.seconds(0.33), 0, 1);
+        animRoll = new AnimationChannel(image3, 7, 25, 25, Duration.seconds(1), 0, 6);
+
+        texture = new AnimatedTexture(animIdle);
+        texture.loop();
     }
 
     @Override
     public void onAdded() {
-//        entity.getTransformComponent().setScaleOrigin(new Point2D(16, 21));
-//        entity.getViewComponent().addChild(texture);
+        entity.getTransformComponent().setScaleOrigin(new Point2D(12, 12));
+        entity.getViewComponent().addChild(texture);
+        entity.setScaleUniform(scale);
     }
 
     @Override
     public void onUpdate(double tpf) {
-//        if (physics.isMovingX()) {
-//            if (texture.getAnimationChannel() != animWalk) {
-//                texture.loopAnimationChannel(animWalk);
-//            }
-//        } else {
-//            if (texture.getAnimationChannel() != animIdle) {
-//                texture.loopAnimationChannel(animIdle);
-//            }
-//        }
+        if (!dodge) {
+            if (physics.isMoving()) {
+                if (texture.getAnimationChannel() != animWalk) {
+                    texture.loopAnimationChannel(animWalk);
+                }
+            } else {
+                if (texture.getAnimationChannel() != animIdle) {
+                    texture.loopAnimationChannel(animIdle);
+                }
+            }
+        }
 
         int dxv = boolToInt(right) - boolToInt(left);
         int dyv = boolToInt(down) - boolToInt(up);
         Point2D vector = new Point2D(dxv, dyv).normalize();
+
+//        if (dxv != 0) {
+//            getEntity().setScaleX(dxv*scale);
+//        }
 
         if (dodge) {
             if (isDodge) {
@@ -83,6 +95,8 @@ public class PlayerComponent extends Component {
     private void Dodge(double startTime, double duration, Point2D vec) {
         dodgeStartTime = startTime;
         dodgeDuration = duration;
+
+        texture.loopAnimationChannel(animRoll);
 
         isDodge = true;
         dodgeVec = vec;
