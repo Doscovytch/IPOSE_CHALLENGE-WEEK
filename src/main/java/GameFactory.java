@@ -44,13 +44,24 @@ public class GameFactory implements EntityFactory {
 
         return entityBuilder(data)
             .type(EntityTypes.PLAYER)
-//                .viewWithBBox("dude.png")
                 .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
                 .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
                 .with(physics)
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(new PlayerComponent())
+                .build();
+    }
+
+    @Spawns("sword")
+    public Entity newSword(SpawnData data) {
+
+        return entityBuilder(data)
+                .type(EntityTypes.WEAPON)
+                .viewWithBBox("weapons/Psword.png")
+                .with(new CollidableComponent(true))
+                .with(new IrremovableComponent())
+                .with(new WeaponComponent())
                 .build();
     }
 
