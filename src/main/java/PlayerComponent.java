@@ -19,7 +19,7 @@ public class PlayerComponent extends Component {
     private AnimatedTexture texture;
     private AnimationChannel animIdle, animWalk, animRoll;
 
-    public double scale = 1;
+    public double scale = 2;
 
     public boolean left = false;
     public boolean right = false;
@@ -57,8 +57,7 @@ public class PlayerComponent extends Component {
 
     @Override
     public void onAdded() {
-        entity.getTransformComponent().setScaleOrigin(new Point2D(12, 24));
-        entity.getTransformComponent().setRotationOrigin(new Point2D(12, 24));
+        entity.getTransformComponent().setScaleOrigin(new Point2D(12, 12));
         entity.getViewComponent().addChild(texture);
         entity.setScaleUniform(scale);
     }
@@ -102,6 +101,11 @@ public class PlayerComponent extends Component {
                 lastDir = new Point2D(dxv, dyv).normalize();
             }
         }
+
+
+
+        System.out.println();
+
     }
 
     private void Dodge(double startTime, double duration, Point2D vec) {

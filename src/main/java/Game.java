@@ -25,8 +25,8 @@ import static com.almasb.fxgl.dsl.FXGL.*;
 public class Game extends GameApplication {
 
     private Entity player;
-    private Entity weapon;
     private Entity camTarget;
+    private Entity weapon;
 
     @Override
     protected void initSettings(GameSettings settings) {
@@ -97,16 +97,15 @@ public class Game extends GameApplication {
         getGameWorld().addEntityFactory(new GameFactory());
 
         player = null;
-        weapon = null;
         camTarget = null;
 //        nextLevel();
 
-
-
+        // player must be spawned after call to nextLevel, otherwise player gets removed
+        // before the update tick _actually_ adds the player to game world
         player = spawn("player", 500, 500);
         set("player", player);
 
-        weapon = spawn("sword", 400, 400);
+//        weapon = spawn("sword", 400, 400);
         camTarget = spawn("camTarget", 500, 500);
 
         Viewport viewport = getGameScene().getViewport();

@@ -44,6 +44,7 @@ public class GameFactory implements EntityFactory {
 
         return entityBuilder(data)
             .type(EntityTypes.PLAYER)
+//                .viewWithBBox("dude.png")
                 .bbox(new HitBox(new Point2D(5,5), BoundingShape.circle(12)))
                 .bbox(new HitBox(new Point2D(10,25), BoundingShape.box(10, 17)))
                 .with(physics)
@@ -55,10 +56,9 @@ public class GameFactory implements EntityFactory {
 
     @Spawns("sword")
     public Entity newSword(SpawnData data) {
-
+        System.out.println(data);
         return entityBuilder(data)
-                .type(EntityTypes.WEAPON)
-                .viewWithBBox("weapons/Psword.png")
+                .type(EntityTypes.SWORD)
                 .with(new CollidableComponent(true))
                 .with(new IrremovableComponent())
                 .with(new WeaponComponent())
